@@ -98,6 +98,31 @@ def no_literales(l):
 			return formula
 	return None
 
+def clasifica(l):
+	# Esta función determina el conectivo que contiene la formula
+	# Input: l, una lista de fórmulas como árboles
+	# Output: La regla que aplica a la formula
+	if l.label == '-':
+		if l.right.label == '-':
+			return "1alfa"
+		elif l.right.label == 'Y':
+			return "1beta"
+		elif l.right.label == '>':
+			return "4alfa"
+		elif l.right.label == 'O':
+			return "3alfa"
+		else:
+			return "None"
+
+	elif l.label == 'Y':
+		return "2alfa"
+	elif l.label == 'O':
+		return "2beta"
+	elif l.label == '>':
+		return "3beta"
+	else:
+		return None
+
 def clasifica_y_extiende(f):
 	# clasifica una fórmula como alfa o beta y extiende listaHojas
 	# de acuerdo a la regla respectiva
