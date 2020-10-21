@@ -37,13 +37,28 @@ D = [T.Tree('1',None,None), T.Tree('2',None,None), T.Tree('-',None,T.Tree('3',No
 #print(T.par_complementario(D))
 
 E = T.Tree('-',None,T.Tree('p',None,None))
-print(T.es_literal(E))
+#print(T.es_literal(E))
 
 F = T.Tree('p',None,None)
-print(T.es_literal(F))
+#print(T.es_literal(F))
 
 G = T.Tree('-',None,T.Tree('Y',T.Tree('p',None,None),T.Tree('q',None,None)))
-print(T.es_literal(G))
+#print(T.es_literal(G))
 
 H = T.Tree('O',T.Tree('k',None,None),T.Tree('Y',T.Tree('i',None,None),T.Tree('j',None,None)))
-print(T.es_literal(H))
+#print(T.es_literal(H))
+
+I = [T.Tree('-',None,T.Tree('p',None,None)),T.Tree('p',None,None),T.Tree('-',None,T.Tree('q',None,None)),T.Tree('q',None,None)]
+#print(T.no_literales(I))
+
+J = [T.Tree('q',None,None),T.Tree('-',None,T.Tree('p',None,None)),T.Tree('-',None,T.Tree('-',None,T.Tree('p',None,None))),T.Tree('-',None,T.Tree('q',None,None))]
+#print(T.no_literales(J))
+
+K = [T.Tree('-',None,T.Tree('p',None,None)),T.Tree('q',None,None),T.Tree('-',None,T.Tree('p',None,None)),T.Tree('r',None,None),T.Tree('-',None,T.Tree('q',None,None)),T.Tree('p',None,None)]
+#print(T.no_literales(K))
+
+L = [T.Tree('p',None,None),T.Tree('q',None,None),T.Tree('O',T.Tree('p',None,None),T.Tree('q',None,None)),T.Tree('-',None,T.Tree('q',None,None)),T.Tree('-',None,T.Tree('p',None,None))]
+#print(T.no_literales(L))
+
+
+
