@@ -123,12 +123,70 @@ def clasifica(l):
 	else:
 		return None
 
-def clasifica_y_extiende(f):
+def clasifica_y_extiende(f, h):
 	# clasifica una fórmula como alfa o beta y extiende listaHojas
 	# de acuerdo a la regla respectiva
 	# Input: f, una fórmula como árbol
 	# Output: no tiene output, pues modifica la variable global listaHojas
 	global listaHojas
+
+	print("Formula:", Inorder(f))
+	print("Hoja:", imprime_hoja(h))
+
+	assert (f in h), "La formula no esta en la lista!"
+
+	clase = clasifica(f)
+	print("Clasificada como:", clase)
+	assert (clase != None), "Formula incorrecta " + imprime_hoja(h)
+
+	if clase == '1alfa':
+		aux = [x for x in h]
+		listaHojas.remove(h)
+		aux.remove(f)
+		aux += [f.right.right]
+		listaHojas.append(aux)
+	elif clase == '2alfa':
+		aux = [x for x in h]
+		listaHojas.remove(h)
+		aux.remove(f)
+		aux += [f.right]
+		aux += [f.left]
+		listaHojas.append(aux)
+	elif clase == '3alfa':
+		aux = [x for x in h]
+		listaHojas.remove(h)
+		aux.remove(f)
+		aux += [Tree('-', None, f.right)]
+		aux += [Tree('-', None, f.left)]
+		listaHojas.append(aux)
+	elif clase == '4alfa':
+		aux = [x for x in h]
+		listaHojas.remove(h)
+		aux.remove(f)
+		aux += [Tree('-', None, f.right)]
+		aux += [f.left]
+		listaHojas.append(aux)
+	elif clase == '1beta':
+		aux = [x for x in h]
+		listaHojas.remove(h)
+		aux.remove(f)
+		aux += [Tree('-', None, f.right)]
+		aux += [Tree('-', None, f.left)]
+		listaHojas.append(aux)
+	elif clase == '2beta':
+		aux = [x for x in h]
+		listaHojas.remove(h)
+		aux.remove(f)
+		aux += [f.right]
+		aux += [f.left]
+		listaHojas.append(aux)
+	elif clase == '3beta':
+		aux = [x for x in h]
+		listaHojas.remove(h)
+		aux.remove(f)
+		aux += [Tree('-', None, f.right)]
+		aux += [f.left]
+		listaHojas.append(aux)
 
 def Tableaux(f):
 
