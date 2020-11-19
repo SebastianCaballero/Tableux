@@ -32,31 +32,55 @@ def Inorder(f):
 	else:
 		return "(" + Inorder(f.left) + f.label + Inorder(f.right) + ")"
 
-def String2Tree(A):
-    # Crea una formula como tree dada una formula como cadena escrita en notacion polaca inversa
-    # Input: A, lista de caracteres con una formula escrita en notacion polaca inversa
-             # letrasProposicionales, lista de letras proposicionales
-    # Output: formula como tree
-
-	# OJO: DEBE INCLUIR SU CÓDIGO DE STRING2TREE EN ESTA PARTE!!!!!
-
-	p = letrasProposicionales[0] # ELIMINE ESTA LINEA LUEGO DE INCLUIR EL CODIGO DE STRING2TREE
-	return Tree(p, None, None) # ELIMINE ESTA LINEA LUEGO DE INCLUIR EL CODIGO DE STRING2TREE
+def String2Tree(A, letrasProposicionales):
+	# Crea una formula como tree dada una formula
+	# como cadena escrita en notacion polaca inversa
+	# Input: A, lista de caracteres con una formula escrita en notacion polaca inversa
+	# letrasProposicionales, lista de letras proposicionales
+	# Output: formula como tree
+	conectivos = ['O', 'Y', '>']
+	pila = []
+	for c in A:
+		if c in letrasProposicionales:
+			pila.append(Tree(c, None, None))
+		elif c == '-':
+			formulaAux = Tree(c, None, pila[-1])
+			del pila[-1]
+			pila.append(formulaAux)
+		elif c in conectivos:
+			formulaAux = Tree(c, pila[-1], pila[-2])
+			del pila[-1]
+			del pila[-1]
+			pila.append(formulaAux)
+	return pila[-1]
 
 ##############################################################################
 # Definición de funciones de tableaux
 ##############################################################################
 
 def imprime_hoja(H):
-	cadena = "{"
-	primero = True
-	for f in H:
-		if primero == True:
-			primero = False
-		else:
-			cadena += ", "
-		cadena += Inorder(f)
-	return cadena + "}"
+	if H[0] != None:
+		cadena = "{"
+		primero = True
+		for f in H:
+			if primero == True:
+				primero = False
+			else:
+				cadena += ", "
+			cadena += Inorder(f)
+		print(cadena + "}")
+	else:
+		cadena = "{"
+		primero = True
+		for f in H:
+			if primero == True:
+				primero = False
+			else:
+				cadena += ", "
+			cadena += Inorder(f)
+		print(cadena + "}")
+
+
 
 def par_complementario(l):
 	# Esta función determina si una lista de solo literales
@@ -131,7 +155,7 @@ def clasifica(l):
 	else:
 		return None
 
-def clasifica_y_extiende(f, h):
+def clasifica_y_extiende(f,h):
 	# clasifica una fórmula como alfa o beta y extiende listaHojas
 	# de acuerdo a la regla respectiva
 	# Input: f, una fórmula como árbol
@@ -141,60 +165,70 @@ def clasifica_y_extiende(f, h):
 	print("Formula:", Inorder(f))
 	print("Hoja:", imprime_hoja(h))
 
-	assert (f in h), "La formula no esta en la lista!"
+	assert(f in h), "La formula no esta en la lista!"
 
 	clase = clasifica(f)
 	print("Clasificada como:", clase)
-	assert (clase != None), "Formula incorrecta " + imprime_hoja(h)
+	assert(clase != None), "Formula incorrecta " + imprime_hoja(h)
 
-	if clase == '1alfa':
+	if clase == '1alfa': #LISTO
 		aux = [x for x in h]
 		listaHojas.remove(h)
 		aux.remove(f)
 		aux += [f.right.right]
 		listaHojas.append(aux)
-	elif clase == '2alfa':
+	elif clase == '2alfa': #LISTO
 		aux = [x for x in h]
 		listaHojas.remove(h)
 		aux.remove(f)
 		aux += [f.right]
 		aux += [f.left]
 		listaHojas.append(aux)
-	elif clase == '3alfa':
+	elif clase == '3alfa': #LISTO
 		aux = [x for x in h]
 		listaHojas.remove(h)
 		aux.remove(f)
-		aux += [Tree('-', None, f.right)]
-		aux += [Tree('-', None, f.left)]
+		aux += [Tree('-',None,f.right.right)]
+		aux += [Tree('-',None,f.right.left)]
 		listaHojas.append(aux)
-	elif clase == '4alfa':
+	elif clase == '4alfa': #LISTO
 		aux = [x for x in h]
 		listaHojas.remove(h)
 		aux.remove(f)
-		aux += [Tree('-', None, f.right)]
-		aux += [f.left]
+		aux += [Tree('-',None,f.right.right)]
+		aux += [f.right.left]
 		listaHojas.append(aux)
-	elif clase == '1beta':
-		aux = [x for x in h]
+	elif clase == '1beta': #LISTO
+		aux1 = [x for x in h]
+		aux2 = [x for x in h]
 		listaHojas.remove(h)
-		aux.remove(f)
-		aux += [Tree('-', None, f.right)]
-		aux += [Tree('-', None, f.left)]
-		listaHojas.append(aux)
-	elif clase == '2beta':
-		aux = [x for x in h]
+		aux1.remove(f)
+		aux2.remove(f)
+		aux1 += [Tree('-', None, f.right.right)]
+		listaHojas.append(aux1)
+		aux2 += [Tree('-',None,f.right.left)]
+		listaHojas.append(aux2)
+	elif clase == '2beta': #LISTO
+		aux1 = [x for x in h]
+		aux2 = [x for x in h]
 		listaHojas.remove(h)
-		aux.remove(f)
-		aux += [f.right]
-		aux += [f.left]
-		listaHojas.append(aux)
-	elif clase == '3beta':
-		aux = [x for x in h]
+		aux1.remove(f)
+		aux2.remove(f)
+		aux1.append(f.right)
+		listaHojas.append(aux1)
+		aux2.append(f.left)
+		listaHojas.append(aux2)
+	elif clase == '3beta': #LISTO
+		aux1 = [x for x in h]
+		aux2 = [x for x in h]
 		listaHojas.remove(h)
-		aux.remove(f)
-		aux += [Tree('-', None, f.right)]
-		aux += [f.left]
-		listaHojas.append(aux)
+		aux1.remove(f)
+		aux2.remove(f)
+		aux1.append(f.right)
+		listaHojas.append(aux1)
+		aux2.append(Tree('-',None,f.left))
+		listaHojas.append(aux2)
+
 
 def Tableaux(f):
 
@@ -202,10 +236,52 @@ def Tableaux(f):
 	# Imput: - f, una fórmula como string en notación polaca inversa
 	# Output: interpretaciones: lista de listas de literales que hacen
 	#		 verdadera a f
+
 	global listaHojas
 	global listaInterpsVerdaderas
 
-	A = String2Tree(f)
+	A = String2Tree(f,let)
+	print(u'La fórmula introducida es:\n', Inorder(A))
+
 	listaHojas = [[A]]
 
+	while (len(listaHojas) > 0):
+		h = choice(listaHojas)
+		print("Trabajando con hoja:\n", imprime_hoja(h))
+		x = no_literales(h)
+		if x == None:
+			if par_complementario(h):
+				listaHojas.remove(h)
+			else:
+				listaInterpsVerdaderas.append(h)
+				listaHojas.remove(h)
+		else:
+			clasifica_y_extiende(x, h)
+
 	return listaInterpsVerdaderas
+
+
+
+
+let=['r','s','p','q']
+# # f = String2Tree('prsYO-',let)
+# #
+# # h = [f, String2Tree('q',let), String2Tree('p',let)]
+# #
+# # listaHojas = [h]
+# #
+# # clasifica_y_extiende(f, h)
+# #
+# # imprime_hoja(listaHojas[0])
+#
+#
+# f = String2Tree('qp>',let)
+#
+# h = [f, String2Tree('s-',let)]
+#
+# listaHojas = [h]
+#
+# clasifica_y_extiende(f, h)
+#
+# imprime_hoja(listaHojas[0])
+# imprime_hoja(listaHojas[1])
