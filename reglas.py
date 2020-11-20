@@ -24,6 +24,17 @@ def String2Tree(A):
             print(u"Hay un problema: el símbolo " + str(c)+ " no se reconoce")
     return Pila[-1]
 
+def Inorder(f):
+    # Imprime una formula como cadena dada una formula como arbol
+    # Input: tree, que es una formula de logica proposicional
+    # Output: string de la formula
+	if f.right == None:
+		return f.label
+	elif f.label == '-':
+		return f.label + Inorder(f.right)
+	else:
+		return "(" + Inorder(f.left) + f.label + Inorder(f.right) + ")"
+
 #Victoria Horizontal en O
 def regla0():
     inicial = True
