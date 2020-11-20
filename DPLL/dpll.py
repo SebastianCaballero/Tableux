@@ -73,7 +73,6 @@ def unit_propagate(S, I):
 def dpll(S,I):
 
 	S, I = unit_propagate(S,I)
-#	print(S,I)
 
 	if ([] in S):
 		return "Insatisfacible", {}
@@ -125,3 +124,37 @@ def dpll(S,I):
 			else:
 				Icopy[complemento] = True
 			return dpll(Scopy,Icopy)
+
+
+
+#TALER UNCOMMENT PARA VER LOS RESULTADOS
+letrasProposicionales = ['p', 'q', 'r','t','s']
+
+
+#E4
+
+#a
+#S = [['p', 'q'], ['r'], ['q', '-r']]
+
+#b
+#S=[['p','q','r','-s'],['p','t','s'],['-p','-q'],['p','r','-q','-s']]
+
+#c
+#S=[['p','q','-r'],['r','s','t'],['t'],['p','s'],['q','-p']]
+
+#d
+#S=[['p','-q'],['-p','-q'],['q','r'],['-q','-r'],['-p','-r'],['p','-r']]
+
+#e
+#S=[['r','p','s'],['-r','-p','s'],['-r','p','s'],['p','-s'],['-s', '-r'],['-p']]
+
+
+
+I = {}
+
+for atom in letrasProposicionales:
+	I[atom] = False
+
+print(S)
+S, I = dpll(S,I)
+print(S,I)
